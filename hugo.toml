@@ -3,7 +3,9 @@ languageCode = "de"
 defaultContentLanguage = "de"
 title = "KaffeeWissen"
 theme = "kaffee"
-paginate = 12
+
+[pagination]
+  pagerSize = 12
 
 [taxonomies]
   category = "categories"

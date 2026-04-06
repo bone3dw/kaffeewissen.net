@@ -1,10 +1,9 @@
-baseURL = "https://kaffeewissen-net.pages.dev"
+baseURL = "https://kaffee-wissen.net/"
 languageCode = "de"
 defaultContentLanguage = "de"
 title = "KaffeeWissen"
 theme = "kaffee"
-[pagination]
-  pagerSize = 12
+paginate = 12
 
 [taxonomies]
   category = "categories"

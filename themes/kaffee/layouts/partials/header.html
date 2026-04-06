@@ -1,16 +1,69 @@
 <header class="topbar">
-  <a href="{{ "/" | relURL }}" class="logo">KW</a>
+  <div class="topbar-inner">
+    <a href="{{ "/" | relURL }}" class="logo">KW</a>
 
-  <nav class="nav-pills">
-    {{ range .Site.Menus.main }}
-    <a href="{{ .URL }}" class="pill{{ if $.IsMenuCurrent "main" . }} pill--active{{ end }}">{{ .Name }}</a>
-    {{ end }}
-  </nav>
+    <nav class="nav-pills" aria-label="Hauptnavigation">
+      {{ range .Site.Menus.main }}
+      <a href="{{ .URL }}" class="pill{{ if $.IsMenuCurrent "main" . }} pill--active{{ end }}">{{ .Name }}</a>
+      {{ end }}
+    </nav>
 
-  <div class="search" role="search" aria-label="Suche">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-      <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-    </svg>
-    <span>Guide suchen …</span>
+    <div class="search" role="search" aria-label="Suche">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+      </svg>
+      <span>Guide suchen …</span>
+    </div>
+
+    <button class="nav-burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobile-nav">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </div>
 </header>
+
+<div class="mobile-nav" id="mobile-nav" hidden aria-label="Mobile Navigation">
+  <nav class="mobile-nav-links">
+    {{ range .Site.Menus.main }}
+    <a href="{{ .URL }}" class="mobile-nav-link">{{ .Name }}</a>
+    {{ end }}
+  </nav>
+</div>
+
+<script>
+(function() {
+  var burger = document.querySelector('.nav-burger');
+  var mobileNav = document.getElementById('mobile-nav');
+  if (!burger || !mobileNav) return;
+
+  burger.addEventListener('click', function() {
+    var isOpen = burger.getAttribute('aria-expanded') === 'true';
+    burger.setAttribute('aria-expanded', String(!isOpen));
+    burger.setAttribute('aria-label', isOpen ? 'Menü öffnen' : 'Menü schließen');
+    mobileNav.hidden = isOpen;
+    document.body.style.overflow = isOpen ? '' : 'hidden';
+  });
+
+  // Schließen bei Link-Klick
+  mobileNav.querySelectorAll('.mobile-nav-link').forEach(function(link) {
+    link.addEventListener('click', function() {
+      burger.setAttribute('aria-expanded', 'false');
+      burger.setAttribute('aria-label', 'Menü öffnen');
+      mobileNav.hidden = true;
+      document.body.style.overflow = '';
+    });
+  });
+
+  // Schließen bei Escape
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && !mobileNav.hidden) {
+      burger.setAttribute('aria-expanded', 'false');
+      burger.setAttribute('aria-label', 'Menü öffnen');
+      mobileNav.hidden = true;
+      document.body.style.overflow = '';
+      burger.focus();
+    }
+  });
+})();
+</script>

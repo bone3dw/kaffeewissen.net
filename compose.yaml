@@ -1,0 +1,17 @@
+services:
+  hugo:
+    image: hugomods/hugo:latest
+    container_name: hugo-kaffeewissen
+    ports:
+      - "1414:1313"
+    volumes:
+      - .:/src
+    environment:
+      # Optional: set these to match your NAS user ID/Group ID 
+      # to avoid permission issues with files created by Docker
+      - HUGO_UID=1028
+      - HUGO_GID=100
+    working_dir: /src
+    # This command runs the development server with live reload enabled
+    command: server --bind 0.0.0.0 --port 1313 --buildDrafts --appendPort=false --baseURL=http://diskstation
+    restart: unless-stopped

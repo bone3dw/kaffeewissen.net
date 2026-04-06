@@ -1,0 +1,34 @@
+baseURL = "https://kaffee-wissen.net/"
+languageCode = "de"
+defaultContentLanguage = "de"
+title = "KaffeeWissen"
+theme = "kaffee"
+paginate = 12
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+
+[params]
+  description = "Einsteigerfreundliche Anleitungen für Heim-Baristas"
+  tagline = "Kaffee.\nWissen."
+  hero_sub = "Anleitungen für Heim-Baristas"
+  featured_guide = ""   # slug des featured posts (leer = neuester)
+
+[menu]
+  [[menu.main]]
+    name = "Guides"
+    url  = "/guides/"
+    weight = 1
+  [[menu.main]]
+    name = "Grundlagen"
+    url  = "/categories/grundlagen/"
+    weight = 2
+  [[menu.main]]
+    name = "Espresso"
+    url  = "/categories/espresso/"
+    weight = 3
+  [[menu.main]]
+    name = "Milch"
+    url  = "/categories/milch/"
+    weight = 4

@@ -1,0 +1,5 @@
+name = "Kaffee"
+license = "MIT"
+licenselink = ""
+description = "Minimalistisches Hugo-Theme für Heim-Barista-Anleitungen"
+min_version = "0.120.0"

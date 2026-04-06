@@ -1,0 +1,28 @@
+<article class="guide-card" itemscope itemtype="https://schema.org/HowTo">
+  <a href="{{ .Permalink }}" class="guide-card-link" aria-label="{{ .Title }}">
+    <div class="guide-card-top">
+      {{ with index .Params.categories 0 }}
+      <span class="guide-card-cat">{{ . }}</span>
+      {{ end }}
+      <span class="guide-card-diff diff--{{ .Params.difficulty | default "einsteiger" | lower }}">
+        {{ .Params.difficulty | default "Einsteiger" }}
+      </span>
+    </div>
+
+    <div class="guide-card-body">
+      <h3 class="guide-card-title" itemprop="name">{{ .Title }}</h3>
+      <p class="guide-card-desc" itemprop="description">{{ .Description | truncate 100 }}</p>
+    </div>
+
+    <div class="guide-card-foot">
+      <time class="guide-card-date" datetime="{{ .Date.Format "2006-01-02" }}">
+        {{ .Date.Format "02.01.2006" }}
+      </time>
+      <span class="guide-card-arrow">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </span>
+    </div>
+  </a>
+</article>

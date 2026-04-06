@@ -1,0 +1,101 @@
+{{ define "main" }}
+
+{{/* ── Hero ──────────────────────────────────────────────── */}}
+<section class="hero" aria-label="Hero">
+  <div class="hero-left">
+    <p class="hero-label">Heim-Barista</p>
+    <h1 class="hero-title">Kaffee.<br>Wissen.</h1>
+    <p class="hero-desc">Einsteigerfreundliche Anleitungen für besseren Kaffee zu Hause — verständlich, praktisch, ohne Fachjargon.</p>
+    <a href="{{ "/guides/" | relURL }}" class="hero-cta">
+      Alle Guides entdecken
+      <svg viewBox="0 0 24 24" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+
+  <div class="hero-right">
+    {{ $guides := where .Site.RegularPages "Section" "guides" }}
+    {{ $featured := index (where $guides "Params.featured" true) 0 }}
+    {{ if not $featured }}{{ $featured = index $guides 0 }}{{ end }}
+    {{ with $featured }}
+    <a href="{{ .RelPermalink }}" class="hero-featured" aria-label="Featured Guide: {{ .Title }}">
+      {{ with .Params.image }}
+      <img src="{{ . }}" alt="" class="hero-featured-img" width="720" height="540" loading="eager">
+      {{ else }}
+      <div class="hero-featured-img"></div>
+      {{ end }}
+      {{ with .Params.categories }}
+      <span class="hero-featured-badge">{{ index . 0 }}</span>
+      {{ end }}
+      <div class="hero-featured-info">
+        <div class="hero-featured-title">{{ .Title }}</div>
+        <div class="hero-featured-meta">
+          {{ with .Params.difficulty }}{{ . }} · {{ end }}{{ .ReadingTime }} min Lesezeit
+        </div>
+      </div>
+    </a>
+    {{ end }}
+  </div>
+</section>
+
+{{/* ── Kategorie-Leiste ─────────────────────────────────── */}}
+{{ $cats := .Site.Taxonomies.categories }}
+{{ if $cats }}
+<nav class="categories" aria-label="Kategorien filtern">
+  <div class="categories-inner">
+    <a href="{{ "/guides/" | relURL }}" class="cat-pill cat-pill--active">Alle</a>
+    {{ range .Site.Taxonomies.categories.ByCount }}
+    <a href="{{ .Page.RelPermalink }}" class="cat-pill">{{ .Page.Title }}</a>
+    {{ end }}
+  </div>
+</nav>
+{{ end }}
+
+{{/* ── Aktuelle Guides ──────────────────────────────────── */}}
+{{ $guides := where .Site.RegularPages "Section" "guides" }}
+{{ if $guides }}
+<section aria-labelledby="guides-heading">
+  <div class="section-header">
+    <h2 class="section-title" id="guides-heading">Aktuelle Guides</h2>
+    <a href="{{ "/guides/" | relURL }}" class="section-link">Alle ansehen</a>
+  </div>
+
+  <div class="guides-grid">
+    {{ range first 6 $guides }}
+    <a href="{{ .RelPermalink }}" class="guide-card">
+      <div class="guide-card-thumb" aria-hidden="true">
+        {{ with .Params.image }}
+        <img src="{{ . }}" alt="" width="480" height="270" loading="lazy">
+        {{ else }}
+        <div class="guide-card-thumb-icon">
+          <svg viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+            <path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3"/>
+          </svg>
+        </div>
+        {{ end }}
+      </div>
+      <div class="guide-card-body">
+        <div class="guide-card-tags">
+          {{ with .Params.categories }}<span class="tag">{{ index . 0 }}</span>{{ end }}
+          {{ with .Params.difficulty }}<span class="tag tag-difficulty-{{ . | lower | urlize }}">{{ . }}</span>{{ end }}
+        </div>
+        <h3 class="guide-card-title">{{ .Title }}</h3>
+        <p class="guide-card-desc">{{ with .Description }}{{ . }}{{ else }}{{ .Summary | truncate 120 }}{{ end }}</p>
+        <div class="guide-card-footer">
+          <span class="guide-card-meta">{{ .ReadingTime }} min</span>
+          <span class="guide-card-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+        </div>
+      </div>
+    </a>
+    {{ end }}
+  </div>
+</section>
+{{ else }}
+<div class="empty-state">
+  <p class="empty-state-title">Noch keine Guides vorhanden</p>
+  <p>Füge Markdown-Dateien unter <code>content/guides/</code> hinzu.</p>
+</div>
+{{ end }}
+
+{{ end }}

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mahlgrad on KaffeeWissen</title>
+    <link>http://diskstation/tags/mahlgrad/</link>
+    <description>Recent content in Mahlgrad on KaffeeWissen</description>
+    <generator>Hugo</generator>
+    <language>de</language>
+    <lastBuildDate>Sun, 10 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://diskstation/tags/mahlgrad/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Den richtigen Mahlgrad für Espresso finden</title>
+      <link>http://diskstation/guides/mahlgrad-espresso/</link>
+      <pubDate>Sun, 10 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>http://diskstation/guides/mahlgrad-espresso/</guid>
+      <description>&lt;p&gt;Der Mahlgrad ist einer der wichtigsten — und gleichzeitig häufigst falsch eingestellten — Parameter beim Espresso. Er bestimmt, wie schnell das Wasser durch das Kaffeemehl fließt und damit direkt den Geschmack.&lt;/p&gt;&#xA;&lt;h2 id=&#34;was-passiert-beim-mahlen&#34;&gt;Was passiert beim Mahlen?&lt;/h2&gt;&#xA;&lt;p&gt;Kaffeebohnen werden beim Mahlen in kleine Partikel zerkleinert. Diese Partikel bilden im Siebträger einen Puck, durch den heißes Wasser mit etwa 9 Bar Druck gepresst wird. Je feiner die Partikel, desto mehr Widerstand — und desto langsamer läuft der Espresso.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Ross Droplet Technique (RDT): Statik beim Mahlen eliminieren</title>
+      <link>http://diskstation/guides/rdt-ross-droplet-technique/</link>
+      <pubDate>Sat, 10 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>http://diskstation/guides/rdt-ross-droplet-technique/</guid>
+      <description>&lt;p&gt;Kennst du das? Kaffeemehl, das an der Mühle klebt, elektrostatisch zusammenklumpt oder ungleichmäßig in den Siebträger fällt? Die &lt;strong&gt;Ross Droplet Technique&lt;/strong&gt; (RDT) löst dieses Problem mit einem simplen Trick: einem einzigen Wassertropfen.&lt;/p&gt;&#xA;&lt;h2 id=&#34;warum-entsteht-statik-beim-mahlen&#34;&gt;Warum entsteht Statik beim Mahlen?&lt;/h2&gt;&#xA;&lt;p&gt;Beim Zerkleinern der Bohnen entstehen durch Reibung elektrische Ladungen — ähnlich wie beim Anziehen eines Wollpullovers. Feine Kaffeepartikel laden sich auf und stoßen sich gegenseitig ab oder haften an Metalloberflächen. Das führt zu:&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -4,8 +4,9 @@
   {{ partial "head.html" . }}
 </head>
 <body>
+  <a href="#page-main" class="skip-link">Zum Hauptinhalt springen</a>
   {{ partial "header.html" . }}
-  <main class="page-main">
+  <main class="page-main" id="page-main">
     {{ block "main" . }}{{ end }}
   </main>
   {{ partial "footer.html" . }}

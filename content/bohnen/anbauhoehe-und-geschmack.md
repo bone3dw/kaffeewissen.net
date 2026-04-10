@@ -1,10 +1,10 @@
 ---
-title: "Wie die Anbauhöhe den Kaffeegeschmack beeinflusst"
-description: "High-Altitude, SHB, Specialty — Begriffe auf Kaffeeverpackungen, die alle mit Höhe zu tun haben. Hier erfährst du warum Höhenlage und Geschmack eng zusammenhängen."
-date: 2024-01-28
-categories: ["Grundlagen"]
+title: "Anbauhöhe und Geschmack: Wie sie zusammenhängen"
+description: "High-Altitude, SHB, Specialty — Begriffe auf Kaffeeverpackungen, die alle mit Höhe zu tun haben. Hier erfährst du, warum Höhenlage und Geschmack eng zusammenhängen."
+date: 2025-12-19
+categories: ["Bohnen"]
 tags: ["origin", "anbau", "terroir", "specialty", "säure"]
-difficulty: "Einsteiger"
+difficulty: "Fortgeschritten"
 ---
 
 Auf vielen Specialty-Coffee-Verpackungen findest du Angaben wie „1800 masl" (meters above sea level) oder Bezeichnungen wie SHB (Strictly Hard Bean). Diese Zahlen sind kein Marketingbegriff — sie verraten dir tatsächlich etwas über den Geschmack im Glas.

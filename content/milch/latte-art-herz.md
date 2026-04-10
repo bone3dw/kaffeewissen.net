@@ -1,7 +1,7 @@
 ---
-title: "Latte Art: Das perfekte Herz in 5 Schritten"
+title: "Latte Art lernen: Das perfekte Herz in 5 Schritten"
 description: "Mit der richtigen Milchtextur und ein bisschen Übung gelingt dir das klassische Latte-Art-Herz in wenigen Wochen. Hier ist die Schritt-für-Schritt-Anleitung."
-date: 2024-02-20
+date: 2026-02-15
 categories: ["Milch"]
 tags: ["latte-art", "milch", "dampf", "microfoam"]
 difficulty: "Fortgeschritten"

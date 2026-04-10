@@ -1,0 +1,49 @@
+<div class="kw-tool" id="mahlgrad-finder">
+  <h3>Mahlgrad-Finder</h3>
+  <p class="kw-tool-intro">Wähle deine Brühmethode und bekomme den passenden Mahlgrad als Referenz.</p>
+
+  <div class="kw-tool-field">
+    <label for="mg-method">Methode</label>
+    <select id="mg-method" class="kw-tool-input">
+      <option value="turkish">Türkischer Mokka</option>
+      <option value="espresso" selected>Espresso (Siebträger)</option>
+      <option value="moka">Mokkakanne (Bialetti)</option>
+      <option value="aeropress">Aeropress</option>
+      <option value="v60">Pour Over / V60</option>
+      <option value="chemex">Chemex</option>
+      <option value="frenchpress">French Press</option>
+      <option value="coldbrew">Cold Brew</option>
+    </select>
+  </div>
+
+  <div class="kw-tool-result">
+    <div class="kw-tool-result-label">Mahlgrad</div>
+    <div class="kw-tool-result-value" id="mg-label">fein</div>
+    <div class="kw-tool-result-sub" id="mg-vergleich">wie feiner Sand</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var data = {
+    turkish:    { label:'extrafein',                vergleich:'wie Puderzucker' },
+    espresso:   { label:'fein',                     vergleich:'wie feiner Sand' },
+    moka:       { label:'mittelfein',               vergleich:'wie Tafelsalz' },
+    aeropress:  { label:'mittelfein bis mittel',    vergleich:'wie grobes Salz' },
+    v60:        { label:'mittel',                   vergleich:'wie grober Sand' },
+    chemex:     { label:'mittelgrob',               vergleich:'wie grobes Meersalz' },
+    frenchpress:{ label:'grob',                     vergleich:'wie Pfefferkörner' },
+    coldbrew:   { label:'sehr grob',                vergleich:'wie grobes Pfeffermehl' }
+  };
+  var sel = document.getElementById('mg-method');
+  var lab = document.getElementById('mg-label');
+  var ver = document.getElementById('mg-vergleich');
+  function update(){
+    var d = data[sel.value];
+    lab.textContent = d.label;
+    ver.textContent = d.vergleich;
+  }
+  sel.addEventListener('change', update);
+  update();
+})();
+</script>

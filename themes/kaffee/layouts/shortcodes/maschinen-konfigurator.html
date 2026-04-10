@@ -1,0 +1,94 @@
+<div class="kw-tool" id="maschinen-konfigurator">
+  <div class="mk-question" data-step="1">
+    <h3>1. Was ist dein Budget für Maschine + Mühle zusammen?</h3>
+    <div class="kw-tool-options">
+      <button type="button" class="kw-tool-btn" data-key="budget" data-value="low">unter 600 €</button>
+      <button type="button" class="kw-tool-btn" data-key="budget" data-value="mid">600–1500 €</button>
+      <button type="button" class="kw-tool-btn" data-key="budget" data-value="high">über 1500 €</button>
+    </div>
+  </div>
+
+  <div class="mk-question" data-step="2" hidden>
+    <h3>2. Wie viele Espresso pro Tag?</h3>
+    <div class="kw-tool-options">
+      <button type="button" class="kw-tool-btn" data-key="use" data-value="solo">1–2 (alleine)</button>
+      <button type="button" class="kw-tool-btn" data-key="use" data-value="paar">3–6 (Paar / Familie)</button>
+      <button type="button" class="kw-tool-btn" data-key="use" data-value="viel">7+ (Vielnutzer)</button>
+    </div>
+  </div>
+
+  <div class="mk-question" data-step="3" hidden>
+    <h3>3. Was ist dir wichtiger?</h3>
+    <div class="kw-tool-options">
+      <button type="button" class="kw-tool-btn" data-key="pref" data-value="milk">Cappuccino &amp; Milchgetränke</button>
+      <button type="button" class="kw-tool-btn" data-key="pref" data-value="espresso">purer Espresso, Specialty</button>
+      <button type="button" class="kw-tool-btn" data-key="pref" data-value="balanced">beides ausgewogen</button>
+    </div>
+  </div>
+
+  <div class="mk-question" data-step="result" hidden>
+    <div class="kw-tool-result">
+      <div class="kw-tool-result-label">Empfehlung</div>
+      <div id="mk-result-content"></div>
+    </div>
+  </div>
+
+  <div class="kw-tool-reset">
+    <button type="button" class="kw-tool-restart" hidden>↻ Von vorn beginnen</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var root = document.getElementById('maschinen-konfigurator');
+  if (!root) return;
+  var steps = root.querySelectorAll('.mk-question');
+  var restart = root.querySelector('.kw-tool-restart');
+  var resultEl = root.querySelector('#mk-result-content');
+  var state = {};
+
+  function show(step){
+    steps.forEach(function(s){ s.hidden = s.dataset.step !== step; });
+    restart.hidden = step === '1';
+  }
+
+  function recommend(){
+    var b = state.budget, u = state.use, p = state.pref;
+    var html = '';
+    if (b === 'low') {
+      html = '<p><strong>Einsteiger-Setup</strong></p><p>Maschine: Solo-Boiler-Siebträger (Gaggia Classic Pro, Rancilio Silvia)<br>Mühle: Eureka Mignon Specialita oder Sage Smart Grinder<br>Budget: ca. 500–600 €</p>';
+      if (p === 'espresso') html += '<p>Mit PID-Mod auch für helle Specialty geeignet.</p>';
+      if (p === 'milk')     html += '<p>Hinweis: Singleboiler – zwischen Brüh- und Dampfmodus warten.</p>';
+    } else if (b === 'mid') {
+      html = '<p><strong>Mittelklasse-Setup</strong></p>';
+      if (p === 'milk' || p === 'balanced') {
+        html += '<p>Maschine: Heat Exchanger oder Dual Boiler (Lelit Mara X, Profitec Go, ECM Classika)<br>Mühle: Eureka Mignon Specialita oder Niche Zero<br>Budget: 1200–1500 €</p>';
+      } else {
+        html += '<p>Maschine: Lelit Bianca, Profitec Pro 600, Sage Dual Boiler<br>Mühle: Niche Zero (Single Dosing für Specialty)<br>Budget: ca. 1500 €</p>';
+      }
+    } else {
+      html = '<p><strong>High-End-Setup</strong></p><p>Maschine: Profitec Pro 700, ECM Synchronika, Lelit Bianca V3<br>Mühle: Niche Zero, Eureka Atom 75, DF64</p>';
+      if (u === 'viel')     html += '<p>Bei vielen Bezügen pro Tag: Dual Boiler ist Pflicht.</p>';
+      if (p === 'espresso') html += '<p>Für helle Specialty: Maschine mit Pre-Infusion und Druckprofilen (Lelit Bianca).</p>';
+    }
+    html += '<p class="kw-tool-result-sub">Faustregel: mindestens 30–40 % des Budgets in die Mühle investieren.</p>';
+    resultEl.innerHTML = html;
+    show('result');
+  }
+
+  root.addEventListener('click', function(e){
+    var btn = e.target.closest('.kw-tool-btn');
+    if (btn) {
+      state[btn.dataset.key] = btn.dataset.value;
+      if (btn.dataset.key === 'budget') show('2');
+      else if (btn.dataset.key === 'use') show('3');
+      else if (btn.dataset.key === 'pref') recommend();
+      return;
+    }
+    if (e.target.classList.contains('kw-tool-restart')) {
+      state = {};
+      show('1');
+    }
+  });
+})();
+</script>

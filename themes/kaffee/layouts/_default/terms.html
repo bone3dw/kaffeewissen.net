@@ -1,0 +1,59 @@
+{{ define "main" }}
+
+<div class="list-header">
+  <h1 class="list-title">{{ .Title | default "Alle Tags" }}</h1>
+  <p class="list-desc">Alle Tags – gruppiert nach Hauptkategorie und sortiert nach Häufigkeit.</p>
+</div>
+
+{{/* Sections in gewünschter Reihenfolge */}}
+{{ $sectionOrder := slice
+  (dict "slug" "espresso"      "title" "Espresso")
+  (dict "slug" "fehleranalyse" "title" "Fehleranalyse")
+  (dict "slug" "bohnen"        "title" "Bohnen")
+  (dict "slug" "equipment"     "title" "Equipment")
+  (dict "slug" "milch"         "title" "Milch")
+  (dict "slug" "bruehmethoden" "title" "Brühmethoden")
+  (dict "slug" "grundlagen"    "title" "Grundlagen")
+  (dict "slug" "tools"         "title" "Tools")
+}}
+
+<div class="tags-index">
+  {{ range $sectionOrder }}
+    {{ $slug := .slug }}
+    {{ $sectionTitle := .title }}
+
+    {{/* Tag-Counts nur für Artikel dieser Section */}}
+    {{ $tagCounts := dict }}
+    {{ range where site.RegularPages "Section" $slug }}
+      {{ range .Params.tags }}
+        {{ $k := . | lower }}
+        {{ $tagCounts = merge $tagCounts (dict $k (add (index $tagCounts $k | default 0) 1)) }}
+      {{ end }}
+    {{ end }}
+
+    {{ if $tagCounts }}
+      {{ $tagList := slice }}
+      {{ range $tag, $count := $tagCounts }}
+        {{ $tagList = $tagList | append (dict "tag" $tag "count" $count) }}
+      {{ end }}
+      {{ $sorted := sort $tagList "count" "desc" }}
+
+      <section class="tags-group" aria-labelledby="tags-{{ $slug }}">
+        <h2 class="tags-group-title" id="tags-{{ $slug }}">
+          <a href="{{ (printf "/%s/" $slug) | relURL }}">{{ $sectionTitle }}</a>
+          <span class="tags-group-count">{{ len $sorted }}</span>
+        </h2>
+        <div class="tags-group-pills">
+          {{ range $sorted }}
+          <a href="{{ (printf "/tags/%s/" (.tag | urlize)) | relURL }}" class="cat-pill">
+            #{{ .tag }}
+            <span class="cat-pill-count">{{ .count }}</span>
+          </a>
+          {{ end }}
+        </div>
+      </section>
+    {{ end }}
+  {{ end }}
+</div>
+
+{{ end }}

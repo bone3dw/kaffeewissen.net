@@ -6,20 +6,21 @@
     <p class="hero-label">Heim-Barista</p>
     <h1 class="hero-title">Kaffee.<br>Wissen.</h1>
     <p class="hero-desc">Einsteigerfreundliche Anleitungen für besseren Kaffee zu Hause — verständlich, praktisch, ohne Fachjargon.</p>
-    <a href="{{ "/guides/" | relURL }}" class="hero-cta">
-      Alle Guides entdecken
+    <a href="{{ "/espresso/" | relURL }}" class="hero-cta">
+      Espresso entdecken
       <svg viewBox="0 0 24 24" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
   </div>
 
   <div class="hero-right">
-    {{ $guides := where .Site.RegularPages "Section" "guides" }}
+    {{ $sections := slice "espresso" "fehleranalyse" "bohnen" "equipment" "milch" "bruehmethoden" "grundlagen" }}
+    {{ $guides := where .Site.RegularPages "Section" "in" $sections }}
     {{ $featured := index (where $guides "Params.featured" true) 0 }}
     {{ if not $featured }}{{ $featured = index $guides 0 }}{{ end }}
     {{ with $featured }}
     <a href="{{ .RelPermalink }}" class="hero-featured" aria-label="Featured Guide: {{ .Title }}">
       {{ with .Params.image }}
-      <img src="{{ . }}" alt="" class="hero-featured-img" width="720" height="540" loading="eager">
+      <img src="{{ . }}" alt="{{ $featured.Title }}" class="hero-featured-img" width="720" height="540" loading="eager">
       {{ else }}
       <div class="hero-featured-img"></div>
       {{ end }}
@@ -37,26 +38,33 @@
   </div>
 </section>
 
-{{/* ── Kategorie-Leiste ─────────────────────────────────── */}}
-{{ $cats := .Site.Taxonomies.categories }}
-{{ if $cats }}
-<nav class="categories" aria-label="Kategorien filtern">
-  <div class="categories-inner">
-    <a href="{{ "/guides/" | relURL }}" class="cat-pill cat-pill--active">Alle</a>
-    {{ range .Site.Taxonomies.categories.ByCount }}
-    <a href="{{ .Page.RelPermalink }}" class="cat-pill">{{ .Page.Title }}</a>
-    {{ end }}
-  </div>
+{{/* ── Interaktive Tools ──────────────────────────────── */}}
+<nav class="tool-pills" aria-label="Interaktive Tools">
+  <a href="{{ "/tools/brew-ratio-rechner/" | relURL }}" class="tool-pill">
+    <span class="material-symbols-outlined">calculate</span>
+    <span>Brew-Ratio-Rechner</span>
+  </a>
+  <a href="{{ "/tools/mahlgrad-finder/" | relURL }}" class="tool-pill">
+    <span class="material-symbols-outlined">tune</span>
+    <span>Mahlgrad-Finder</span>
+  </a>
+  <a href="{{ "/tools/fehler-finder/" | relURL }}" class="tool-pill">
+    <span class="material-symbols-outlined">troubleshoot</span>
+    <span>Fehler-Finder</span>
+  </a>
+  <a href="{{ "/tools/maschinen-konfigurator/" | relURL }}" class="tool-pill">
+    <span class="material-symbols-outlined">coffee_maker</span>
+    <span>Maschinen-Konfigurator</span>
+  </a>
 </nav>
-{{ end }}
 
 {{/* ── Aktuelle Guides ──────────────────────────────────── */}}
-{{ $guides := where .Site.RegularPages "Section" "guides" }}
+{{ $sections := slice "espresso" "fehleranalyse" "bohnen" "equipment" "milch" "bruehmethoden" "grundlagen" }}
+{{ $guides := where .Site.RegularPages "Section" "in" $sections }}
 {{ if $guides }}
 <section aria-labelledby="guides-heading">
   <div class="section-header">
     <h2 class="section-title" id="guides-heading">Aktuelle Guides</h2>
-    <a href="{{ "/guides/" | relURL }}" class="section-link">Alle ansehen</a>
   </div>
 
   <div class="guides-grid">
@@ -94,7 +102,7 @@
 {{ else }}
 <div class="empty-state">
   <p class="empty-state-title">Noch keine Guides vorhanden</p>
-  <p>Füge Markdown-Dateien unter <code>content/guides/</code> hinzu.</p>
+  <p>Füge Markdown-Dateien unter <code>content/&lt;section&gt;/</code> hinzu.</p>
 </div>
 {{ end }}
 

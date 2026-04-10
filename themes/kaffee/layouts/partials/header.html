@@ -8,11 +8,41 @@
       {{ end }}
     </nav>
 
-    <div class="search" role="search" aria-label="Suche">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+    <div class="nav-dropdown" id="nav-dropdown">
+      <button type="button" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="nav-dropdown-menu">
+        <span>Kategorien</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
+      </button>
+      <div class="nav-dropdown-menu" id="nav-dropdown-menu" role="menu" hidden>
+        {{ range .Site.Menus.main }}
+        <a href="{{ .URL }}" class="nav-dropdown-link{{ if $.IsMenuCurrent "main" . }} nav-dropdown-link--active{{ end }}" role="menuitem">{{ .Name }}</a>
+        {{ end }}
+      </div>
+    </div>
+
+    <div class="search" id="search-box" role="search" aria-label="Suche">
+      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
         <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
       </svg>
-      <span>Guide suchen …</span>
+      <input
+        type="text"
+        id="search-input"
+        class="search-input"
+        placeholder="Guide suchen …"
+        autocomplete="off"
+        spellcheck="false"
+        aria-label="Suchbegriff eingeben"
+        aria-autocomplete="list"
+        aria-controls="search-results"
+      >
+      <button class="search-close" id="search-close" aria-label="Suche schließen">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
+      <div class="search-results" id="search-results" role="listbox" aria-label="Suchergebnisse" hidden></div>
     </div>
 
     <button class="nav-burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobile-nav">
@@ -33,36 +63,173 @@
 
 <script>
 (function() {
-  var burger = document.querySelector('.nav-burger');
+  /* ── Burger-Menü ──────────────────────────────────────────── */
+  var burger    = document.querySelector('.nav-burger');
   var mobileNav = document.getElementById('mobile-nav');
-  if (!burger || !mobileNav) return;
-
-  burger.addEventListener('click', function() {
-    var isOpen = burger.getAttribute('aria-expanded') === 'true';
-    burger.setAttribute('aria-expanded', String(!isOpen));
-    burger.setAttribute('aria-label', isOpen ? 'Menü öffnen' : 'Menü schließen');
-    mobileNav.hidden = isOpen;
-    document.body.style.overflow = isOpen ? '' : 'hidden';
-  });
-
-  // Schließen bei Link-Klick
-  mobileNav.querySelectorAll('.mobile-nav-link').forEach(function(link) {
-    link.addEventListener('click', function() {
-      burger.setAttribute('aria-expanded', 'false');
-      burger.setAttribute('aria-label', 'Menü öffnen');
-      mobileNav.hidden = true;
-      document.body.style.overflow = '';
+  if (burger && mobileNav) {
+    burger.addEventListener('click', function() {
+      var isOpen = burger.getAttribute('aria-expanded') === 'true';
+      burger.setAttribute('aria-expanded', String(!isOpen));
+      burger.setAttribute('aria-label', isOpen ? 'Menü öffnen' : 'Menü schließen');
+      mobileNav.hidden = isOpen;
+      document.body.style.overflow = isOpen ? '' : 'hidden';
+      if (!isOpen) {
+        var firstLink = mobileNav.querySelector('.mobile-nav-link');
+        if (firstLink) setTimeout(function() { firstLink.focus(); }, 0);
+      }
     });
+    mobileNav.querySelectorAll('.mobile-nav-link').forEach(function(link) {
+      link.addEventListener('click', function() {
+        burger.setAttribute('aria-expanded', 'false');
+        burger.setAttribute('aria-label', 'Menü öffnen');
+        mobileNav.hidden = true;
+        document.body.style.overflow = '';
+      });
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && !mobileNav.hidden) {
+        burger.setAttribute('aria-expanded', 'false');
+        burger.setAttribute('aria-label', 'Menü öffnen');
+        mobileNav.hidden = true;
+        document.body.style.overflow = '';
+        burger.focus();
+      }
+    });
+  }
+
+  /* ── Tablet-Dropdown ──────────────────────────────────────── */
+  var ddRoot = document.getElementById('nav-dropdown');
+  if (ddRoot) {
+    var ddToggle = ddRoot.querySelector('.nav-dropdown-toggle');
+    var ddMenu   = document.getElementById('nav-dropdown-menu');
+    function ddClose() {
+      ddToggle.setAttribute('aria-expanded', 'false');
+      ddMenu.hidden = true;
+    }
+    function ddOpen() {
+      ddToggle.setAttribute('aria-expanded', 'true');
+      ddMenu.hidden = false;
+    }
+    ddToggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (ddToggle.getAttribute('aria-expanded') === 'true') ddClose(); else ddOpen();
+    });
+    document.addEventListener('click', function(e) {
+      if (!ddRoot.contains(e.target)) ddClose();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && ddToggle.getAttribute('aria-expanded') === 'true') {
+        ddClose();
+        ddToggle.focus();
+      }
+    });
+  }
+
+  /* ── Suche ────────────────────────────────────────────────── */
+  var searchBox  = document.getElementById('search-box');
+  var input      = document.getElementById('search-input');
+  var results    = document.getElementById('search-results');
+  var index      = null;
+  var INDEX_URL  = '{{ "/index.json" | relURL }}';
+
+  /* Index sofort im Hintergrund laden – nicht erst bei Klick */
+  fetch(INDEX_URL)
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      index = data;
+      if (input && input.value) search(input.value);
+    })
+    .catch(function(e) { console.warn('Suchindex konnte nicht geladen werden:', e); });
+
+  function activate() {
+    searchBox.classList.add('search--active');
+    input.focus();
+  }
+
+  function deactivate() {
+    searchBox.classList.remove('search--active');
+    input.value = '';
+    results.hidden = true;
+    results.innerHTML = '';
+  }
+
+  function escHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function search(query) {
+    var q = query.trim().toLowerCase();
+    if (!q) { results.hidden = true; results.innerHTML = ''; return; }
+    if (!index) return;
+
+    var matches = index.filter(function(p) {
+      return (p.title       || '').toLowerCase().includes(q) ||
+             (p.description || '').toLowerCase().includes(q) ||
+             (p.tags        || []).some(function(t) { return t.toLowerCase().includes(q); }) ||
+             (p.categories  || []).some(function(c) { return c.toLowerCase().includes(q); });
+    });
+
+    results.hidden = false;
+
+    if (!matches.length) {
+      results.innerHTML = '<p class="search-empty">Keine Ergebnisse für „' + escHtml(query) + '"</p>';
+      return;
+    }
+
+    results.innerHTML = matches.map(function(p) {
+      var cat  = (p.categories || []).map(function(c) {
+        return '<span class="search-cat">' + escHtml(c) + '</span>';
+      }).join('');
+      var diff = p.difficulty
+        ? '<span class="search-difficulty">' + escHtml(p.difficulty) + '</span>'
+        : '';
+      var tags = (p.tags || []).slice(0, 3).map(function(t) {
+        return '<span class="search-tag">' + escHtml(t) + '</span>';
+      }).join('');
+      return '<a href="' + escHtml(p.url) + '" class="search-result" role="option">' +
+        (cat || diff ? '<div class="search-result-badges">' + cat + diff + '</div>' : '') +
+        '<div class="search-result-title">' + escHtml(p.title) + '</div>' +
+        (p.description ? '<div class="search-result-desc">' + escHtml(p.description) + '</div>' : '') +
+        (tags ? '<div class="search-result-tags">' + tags + '</div>' : '') +
+        '</a>';
+    }).join('');
+  }
+
+  var closeBtn = document.getElementById('search-close');
+
+  /* Events */
+  searchBox.addEventListener('click', function() {
+    if (!searchBox.classList.contains('search--active')) activate();
   });
 
-  // Schließen bei Escape
+  if (closeBtn) closeBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    deactivate();
+  });
+
+  input.addEventListener('input', function() { search(this.value); });
+
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') { deactivate(); }
+  });
+
+  /* Klick außerhalb schließt die Suche (nur Desktop – Mobile nutzt Close-Button) */
+  document.addEventListener('click', function(e) {
+    if (!searchBox.contains(e.target)) deactivate();
+  });
+
+  /* Schnelltaste / öffnet die Suche */
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && !mobileNav.hidden) {
-      burger.setAttribute('aria-expanded', 'false');
-      burger.setAttribute('aria-label', 'Menü öffnen');
-      mobileNav.hidden = true;
-      document.body.style.overflow = '';
-      burger.focus();
+    if (e.key === '/' &&
+        !searchBox.classList.contains('search--active') &&
+        document.activeElement.tagName !== 'INPUT' &&
+        document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      activate();
     }
   });
 })();

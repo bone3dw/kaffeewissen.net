@@ -1,0 +1,87 @@
+<div class="fehler-finder" id="fehler-finder">
+  <div class="ff-question" data-step="1">
+    <h3>Was beschreibt deinen Espresso am besten?</h3>
+    <div class="ff-options">
+      <button type="button" class="ff-btn" data-next="taste">Schmeckt komisch (sauer/bitter)</button>
+      <button type="button" class="ff-btn" data-next="time">Bezugszeit stimmt nicht</button>
+      <button type="button" class="ff-btn" data-next="crema">Crema fehlt oder ist seltsam</button>
+      <button type="button" class="ff-btn" data-next="machine">Maschine macht Probleme</button>
+    </div>
+  </div>
+
+  <div class="ff-question" data-step="taste" hidden>
+    <h3>Sauer oder bitter?</h3>
+    <div class="ff-options">
+      <button type="button" class="ff-btn" data-result="/fehleranalyse/espresso-schmeckt-sauer/">Sauer (zusammenziehend)</button>
+      <button type="button" class="ff-btn" data-result="/fehleranalyse/espresso-schmeckt-bitter/">Bitter (herb, aschig)</button>
+    </div>
+  </div>
+
+  <div class="ff-question" data-step="time" hidden>
+    <h3>Zu schnell oder zu langsam?</h3>
+    <div class="ff-options">
+      <button type="button" class="ff-btn" data-result="/fehleranalyse/espresso-laeuft-zu-schnell/">Unter 20 Sek. – zu schnell</button>
+      <button type="button" class="ff-btn" data-result="/fehleranalyse/espresso-laeuft-zu-langsam/">Über 35 Sek. – zu langsam</button>
+      <button type="button" class="ff-btn" data-result="/fehleranalyse/geschmack-aendert-sich-taeglich/">Schwankt von Tag zu Tag</button>
+    </div>
+  </div>
+
+  <div class="ff-question" data-step="crema" hidden>
+    <h3>Was siehst du in der Tasse?</h3>
+    <div class="ff-options">
+      <button type="button" class="ff-btn" data-result="/fehleranalyse/keine-crema/">Gar keine Crema</button>
+      <button type="button" class="ff-btn" data-result="/fehleranalyse/crema-zu-hell-zu-dunkel/">Crema zu hell oder zu dunkel</button>
+      <button type="button" class="ff-btn" data-result="/fehleranalyse/spritzer-bottomless-portafilter/">Spritzer am Bottomless</button>
+      <button type="button" class="ff-btn" data-result="/fehleranalyse/channeling-erkennen-vermeiden-beheben/">Ungleichmäßiger Strahl / Channeling</button>
+    </div>
+  </div>
+
+  <div class="ff-question" data-step="machine" hidden>
+    <h3>Was macht die Maschine?</h3>
+    <div class="ff-options">
+      <button type="button" class="ff-btn" data-result="/fehleranalyse/maschine-zieht-kein-wasser/">Zieht kein Wasser</button>
+      <button type="button" class="ff-btn" data-result="/fehleranalyse/muehle-mahlt-nicht-fein-genug/">Mühle mahlt nicht fein genug</button>
+      <button type="button" class="ff-btn" data-result="/fehleranalyse/milchschaum-nicht-cremig/">Milchschaum wird nicht cremig</button>
+    </div>
+  </div>
+
+  <div class="ff-reset">
+    <button type="button" class="ff-restart" hidden>↻ Von vorn beginnen</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var root = document.getElementById('fehler-finder');
+  if (!root) return;
+  var steps = root.querySelectorAll('.ff-question');
+  var restart = root.querySelector('.ff-restart');
+
+  function show(step) {
+    steps.forEach(function(s){ s.hidden = s.dataset.step !== step; });
+    restart.hidden = step === '1';
+  }
+
+  root.addEventListener('click', function(e){
+    var btn = e.target.closest('.ff-btn');
+    if (!btn) {
+      if (e.target.classList.contains('ff-restart')) show('1');
+      return;
+    }
+    if (btn.dataset.next) {
+      show(btn.dataset.next);
+    } else if (btn.dataset.result) {
+      window.location.href = btn.dataset.result;
+    }
+  });
+})();
+</script>
+
+<style>
+.fehler-finder { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: var(--s5, 1.5rem); margin: var(--s5, 1.5rem) 0; }
+.fehler-finder h3 { margin: 0 0 var(--s4, 1rem) 0; font-size: 1.15rem; }
+.ff-options { display: grid; gap: var(--s3, 0.75rem); }
+.ff-btn { display: block; width: 100%; text-align: left; padding: 0.95rem 1.1rem; background: rgba(255,255,255,0.04); color: inherit; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; font: inherit; cursor: pointer; transition: background 0.15s, border-color 0.15s; min-height: 48px; }
+.ff-btn:hover, .ff-btn:focus-visible { background: rgba(255,255,255,0.08); border-color: var(--accent, #d4a574); outline: none; }
+.ff-restart { margin-top: var(--s4, 1rem); padding: 0.5rem 1rem; background: transparent; color: var(--accent, #d4a574); border: 1px solid currentColor; border-radius: 100px; font: inherit; cursor: pointer; }
+</style>

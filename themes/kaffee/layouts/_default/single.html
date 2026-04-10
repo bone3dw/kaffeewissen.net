@@ -11,6 +11,7 @@
   "dateModified":  "{{ .Lastmod.Format "2006-01-02" }}",
   "url": {{ .Permalink | jsonify }},
   "publisher": { "@type": "Organization", "name": {{ .Site.Title | jsonify }} }
+  {{ with .Params.image }},"image": { "@type": "ImageObject", "url": "{{ $.Site.BaseURL }}{{ strings.TrimPrefix "/" . }}", "description": {{ $.Params.image_alt | default $.Title | jsonify }} }{{ end }}
 }
 </script>
 
@@ -19,11 +20,9 @@
   {{/* Breadcrumb (SEO + Navigation) */}}
   <nav class="post-breadcrumb" aria-label="Breadcrumb">
     <a href="{{ "/" | relURL }}">Start</a>
+    {{ with .CurrentSection }}
     <span class="post-breadcrumb-sep" aria-hidden="true">›</span>
-    <a href="{{ "/guides/" | relURL }}">Guides</a>
-    {{ with index .Params.categories 0 }}
-    <span class="post-breadcrumb-sep" aria-hidden="true">›</span>
-    <a href="{{ "/categories/" | relURL }}{{ . | urlize }}/">{{ . }}</a>
+    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
     {{ end }}
     <span class="post-breadcrumb-sep" aria-hidden="true">›</span>
     <span aria-current="page">{{ .Title }}</span>
@@ -31,13 +30,11 @@
 
   {{/* Post Header */}}
   <header class="post-header">
-    <div class="post-tags">
+    <h1 class="post-title" itemprop="name">{{ .Title }}</h1>
+    {{ with .Description }}<p class="hero-desc">{{ . }}</p>{{ end }}
+    <div class="post-meta">
       {{ with .Params.categories }}<span class="tag">{{ index . 0 }}</span>{{ end }}
       {{ with .Params.difficulty }}<span class="tag tag-difficulty-{{ . | lower | urlize }}">{{ . }}</span>{{ end }}
-    </div>
-    <h1 class="post-title" itemprop="name">{{ .Title }}</h1>
-    {{ with .Description }}<p class="hero-desc" style="margin-bottom:0">{{ . }}</p>{{ end }}
-    <div class="post-meta" style="margin-top: var(--s4)">
       <span class="post-meta-item">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
         {{ .ReadingTime }} min Lesezeit
@@ -51,7 +48,14 @@
 
   {{/* Hero-Bild */}}
   {{ with .Params.image }}
-  <img src="{{ . }}" alt="{{ $.Title }}" class="post-hero-img" width="1200" height="525" loading="eager">
+  <img
+    src="{{ . }}"
+    alt="{{ $.Params.image_alt | default $.Title }}"
+    class="post-hero-img"
+    width="1200" height="525"
+    loading="eager"
+    decoding="async"
+  >
   {{ end }}
 
   {{/* Artikel-Inhalt */}}
@@ -71,13 +75,13 @@
 </div>{{/* /single-wrap */}}
 
 {{/* Verwandte Guides */}}
-{{ $related := where (where .Site.RegularPages "Section" "guides") "Params.categories" "intersect" .Params.categories }}
+{{ $sections := slice "espresso" "fehleranalyse" "bohnen" "equipment" "milch" "bruehmethoden" "grundlagen" }}
+{{ $related := where (where .Site.RegularPages "Section" "in" $sections) "Params.categories" "intersect" .Params.categories }}
 {{ $related = first 3 (where $related "RelPermalink" "ne" .RelPermalink) }}
 {{ if $related }}
-<div style="max-width: var(--max-w); margin: 0 auto; padding: 0 clamp(var(--s4), 4vw, var(--s7))">
+<div>
   <div class="section-header">
     <h2 class="section-title">Weitere Guides</h2>
-    <a href="{{ "/guides/" | relURL }}" class="section-link">Alle ansehen</a>
   </div>
   <div class="guides-grid" style="padding-bottom: var(--s7)">
     {{ range $related }}

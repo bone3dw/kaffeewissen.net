@@ -4,6 +4,9 @@ defaultContentLanguage = "de"
 title = "KaffeeWissen"
 theme = "kaffee"
 
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
 [pagination]
   pagerSize = 12
 
@@ -19,18 +22,39 @@ theme = "kaffee"
 
 [menu]
   [[menu.main]]
-    name = "Guides"
-    url  = "/guides/"
+    name = "Espresso"
+    url  = "/espresso/"
     weight = 1
   [[menu.main]]
-    name = "Grundlagen"
-    url  = "/categories/grundlagen/"
+    name = "Fehleranalyse"
+    url  = "/fehleranalyse/"
     weight = 2
   [[menu.main]]
-    name = "Espresso"
-    url  = "/categories/espresso/"
+    name = "Bohnen"
+    url  = "/bohnen/"
     weight = 3
   [[menu.main]]
-    name = "Milch"
-    url  = "/categories/milch/"
+    name = "Equipment"
+    url  = "/equipment/"
     weight = 4
+  [[menu.main]]
+    name = "Milch"
+    url  = "/milch/"
+    weight = 5
+  [[menu.main]]
+    name = "Brühmethoden"
+    url  = "/bruehmethoden/"
+    weight = 6
+  [[menu.main]]
+    name = "Grundlagen"
+    url  = "/grundlagen/"
+    weight = 7
+
+  [[menu.legal]]
+    name   = "Impressum"
+    url    = "/impressum/"
+    weight = 1
+  [[menu.legal]]
+    name   = "Datenschutz"
+    url    = "/datenschutz/"
+    weight = 2

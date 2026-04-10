@@ -1,14 +1,16 @@
 ---
 title: "Den richtigen Mahlgrad für Espresso finden"
 description: "Zu grob, zu fein oder genau richtig? Lerne, wie du deinen Mahlgrad systematisch einstellst und dabei liest, was dir dein Espresso verrät."
-date: 2024-03-10
+date: 2025-12-12
 categories: ["Espresso"]
 tags: ["mahlgrad", "espresso", "extraktion", "mühle"]
 difficulty: "Einsteiger"
 featured: true
+image: "/images/mahlgrad-espresso-siebtraeger.jpg"
+image_alt: "Siebträger mit frisch gemahlenem Espressopulver – der Mahlgrad entscheidet über Fließzeit und Geschmack"
 ---
 
-Der Mahlgrad ist einer der wichtigsten — und gleichzeitig häufigst falsch eingestellten — Parameter beim Espresso. Er bestimmt, wie schnell das Wasser durch das Kaffeemehl fließt und damit direkt den Geschmack.
+Du ziehst einen Shot, er rauscht in 12 Sekunden durch und schmeckt nach Zitronensäure. Oder er tröpfelt 50 Sekunden und wird bitter wie Medizin. In beiden Fällen ist der Mahlgrad der wahrscheinlichste Hebel. Er bestimmt, wie schnell das Wasser durch das Kaffeemehl fließt — und damit direkt den Geschmack.
 
 ## Was passiert beim Mahlen?
 
@@ -50,6 +52,20 @@ Das ideale Fenster liegt dazwischen: ein Espresso, der süß, vollmundig und mit
 Frisch geröstete Bohnen (unter 2 Wochen) enthalten noch viel CO₂ und benötigen meist einen feineren Mahlgrad. Ältere Bohnen sind degasiert und extrahieren schneller — du musst gröber mahlen.
 
 <div class="tip">
-  <div class="tip-label">Profi-Tipp</div>
+  <div class="tip-label">Praxis</div>
   Notiere dir Datum, Mahlgrad-Einstellung und Bezugszeit jedes Shots. Nach einer Woche hast du genug Daten, um Muster zu erkennen.
 </div>
+
+## Häufige Fragen
+
+**Frage: Wie fein ist „espressofein"?**
+Feiner als Tafelsalz, aber nicht so fein wie Puderzucker. Die meisten Mühlen brauchen für Espresso die feinsten 20–30 % ihres Verstellbereichs. Wenn deine [Mühle nicht fein genug mahlt](/fehleranalyse/muehle-mahlt-nicht-fein-genug/), ist sie wahrscheinlich nicht für Espresso geeignet.
+
+**Frage: Muss ich bei jeder neuen Bohne den Mahlgrad neu einstellen?**
+Ja — verschiedene Bohnen, Röstgrade und Frischegrade erfordern unterschiedliche Mahlgrade. Auch innerhalb derselben Tüte ändert sich der optimale Mahlgrad über die Wochen, weil die Bohne [degast](/bohnen/bohne-frisch-zu-frisch/).
+
+**Frage: Was ist besser — stufenlos oder gestuft?**
+Stufenlos gibt dir feinere Kontrolle, aber gestufte Mühlen sind reproduzierbarer (du kannst die Zahl notieren). Beides funktioniert. Mehr dazu im [Mühlen-Ratgeber](/equipment/espressomuehle-kaufen/).
+
+**Frage: Mein Shot schmeckt gleichzeitig sauer und bitter — was tun?**
+Das deutet oft auf [Channeling](/fehleranalyse/channeling-erkennen-vermeiden-beheben/) hin: Teile des Pucks werden unter-, andere überextrahiert. Überprüfe deine [Puck Preparation](/espresso/puck-preparation/) und nutze den [Mahlgrad-Finder](/tools/mahlgrad-finder/).

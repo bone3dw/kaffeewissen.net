@@ -1,9 +1,16 @@
 <footer class="site-footer">
   <div class="footer-inner">
     <span class="footer-logo">KW</span>
-    <p class="footer-copy">© {{ now.Year }} KaffeeWissen · Anleitungen für Heim-Baristas</p>
-    <nav class="footer-nav">
+    <p class="footer-copy">© {{ now.Year }} KaffeeWissen.net · Anleitungen für Heim-Baristas</p>
+    <nav class="footer-nav" aria-label="Hauptnavigation Footer">
       {{ range .Site.Menus.main }}
+      <a href="{{ .URL }}">{{ .Name }}</a>
+      {{ end }}
+    </nav>
+  </div>
+  <div class="footer-legal">
+    <nav class="footer-legal-nav" aria-label="Rechtliche Hinweise">
+      {{ range .Site.Menus.legal }}
       <a href="{{ .URL }}">{{ .Name }}</a>
       {{ end }}
     </nav>
